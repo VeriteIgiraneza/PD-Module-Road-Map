@@ -43,6 +43,27 @@
   --shadow-glow: 0 0 0 1px var(--border), 0 4px 24px rgba(0,0,0,0.4);
 }
 
+/* light theme override */
+[data-theme="light"] {
+  --bg: #faf7f0;
+  --bg-grad: radial-gradient(ellipse at top, #fff 0%, #faf7f0 60%);
+  --surface: #ffffff;
+  --surface-2: #f5f1e8;
+  --surface-hover: #efeadc;
+  --border: #e5dfd0;
+  --border-strong: #c9c0aa;
+  --ink: #1a1714;
+  --ink-muted: #6b6457;
+  --ink-dim: #9c9486;
+  --accent: #c1311f;
+  --accent-hover: #d6391f;
+  --accent-glow: rgba(193, 49, 31, 0.12);
+  --success: #5d8b3f;
+  --success-bg: rgba(93, 139, 63, 0.1);
+  --gold: #a07e3a;
+  --gold-bg: rgba(160, 126, 58, 0.1);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
@@ -700,6 +721,7 @@ select.chip {
       <div class="brand">the<span>.</span>roadmap</div>
       <div class="sub">pd modules · summer 2026 · full-stack track</div>
     </div>
+    <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">◐</button>
   </header>
 
   <!-- DASHBOARD -->
@@ -1210,6 +1232,20 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   localStorage.removeItem(STORAGE_KEY);
   state = loadState();
   saveAndRender();
+});
+
+/* ─── theme toggle ───────────────────────────────────────────────────────── */
+const THEME_KEY = 'pd-roadmap-theme';
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#faf7f0' : '#0f0d0a');
+}
+applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const next = (document.documentElement.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
 });
 
 /* ─── boot ───────────────────────────────────────────────────────────────── */
