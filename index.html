@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<meta name="description" content="Personal learning roadmap tracker for UofL Speed School PD Modules — Summer 2026.">
+<meta name="theme-color" content="#0f0d0a">
+<title>PD Module</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f0d0a'/%3E%3Ccircle cx='16' cy='17' r='5' fill='%23d63a2c'/%3E%3C/svg%3E">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ─── tokens ─────────────────────────────────────────────────────────────── */
+:root {
+  --bg: #0f0d0a;
+  --bg-grad: radial-gradient(ellipse at top, #1a1612 0%, #0f0d0a 60%);
+  --surface: #1a1714;
+  --surface-2: #221e1a;
+  --surface-hover: #2a2520;
+  --border: #2e2a25;
+  --border-strong: #443e37;
+  --ink: #f5efe4;
+  --ink-muted: #8a7f72;
+  --ink-dim: #5c5349;
+  --accent: #d63a2c;
+  --accent-hover: #e64a3c;
+  --accent-glow: rgba(214, 58, 44, 0.18);
+  --success: #87a96b;
+  --success-bg: rgba(135, 169, 107, 0.12);
+  --gold: #c9a45f;
+  --gold-bg: rgba(201, 164, 95, 0.1);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-glow: 0 0 0 1px var(--border), 0 4px 24px rgba(0,0,0,0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  background-image: var(--bg-grad);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  padding-bottom: 80px;
+}
+
+/* subtle noise overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── layout ─────────────────────────────────────────────────────────────── */
+.shell {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 18px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .shell { padding: 40px 32px; }
+}
+
+/* ─── header ─────────────────────────────────────────────────────────────── */
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  font-style: italic;
+}
+.brand span { color: var(--accent); }
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── dashboard ──────────────────────────────────────────────────────────── */
+.dashboard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.dash-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.dash-headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(28px, 6vw, 42px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+  position: relative;
+}
+.dash-headline em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.dash-deadline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-bottom: 22px;
+  position: relative;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  position: relative;
+}
+
+@media (min-width: 600px) {
+  .stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+.stat {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.stat.full {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 600px) {
+  .stat.full { grid-column: auto; }
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-value .small {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.bar {
+  height: 4px;
+  background: var(--bg);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bar-fill.done {
+  background: linear-gradient(90deg, var(--success), #a3c084);
+}
+
+.check-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--bg);
+  font-size: 9px;
+  font-weight: 700;
+  margin-left: 4px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.3s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+.check-badge.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.pace-note {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  position: relative;
+  padding-left: 14px;
+}
+.pace-note::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+.pace-note.celebrate { color: var(--success); }
+.pace-note.celebrate::before { content: '✓'; color: var(--success); }
+
+/* ─── tabs ────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  background: transparent;
+  border: none;
+  color: var(--ink-muted);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 16px;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--ink); }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--accent);
+}
+.tab-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-left: 6px;
+}
+
+/* ─── filters ─────────────────────────────────────────────────────────────── */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 100%;
+  position: relative;
+}
+@media (min-width: 600px) {
+  .search-box { min-width: 220px; }
+}
+.search-box input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px 10px 36px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: var(--border-strong);
+}
+.search-box::before {
+  content: '⌕';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-dim);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.chip:hover {
+  border-color: var(--border-strong);
+  color: var(--ink);
+}
+.chip.active {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+select.chip {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%238a7f72' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* ─── course cards ───────────────────────────────────────────────────────── */
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: start;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.course:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+.course.complete {
+  opacity: 0.6;
+}
+.course.complete .course-title {
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-dim);
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  background: var(--bg);
+  transition: all 0.15s;
+}
+.course:hover .checkbox { border-color: var(--ink-muted); }
+.course.complete .checkbox {
+  background: var(--success);
+  border-color: var(--success);
+}
+.checkbox::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border-right: 2px solid var(--bg);
+  border-bottom: 2px solid var(--bg);
+  transform: rotate(45deg) scale(0);
+  margin-bottom: 2px;
+  transition: transform 0.2s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+.course.complete .checkbox::after { transform: rotate(45deg) scale(1); }
+
+.course-body { min-width: 0; }
+.course-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.course-desc {
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: center;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+}
+.tag.hours { color: var(--accent); }
+.tag.tech { color: var(--ink-muted); }
+.tag.prof { color: var(--gold); }
+.tag.rec {
+  background: var(--gold-bg);
+  color: var(--gold);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.tag.free {
+  background: var(--success-bg);
+  color: var(--success);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.course-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.15s;
+}
+.icon-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--ink);
+  background: var(--surface-2);
+}
+.icon-btn.added {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── empty state ─────────────────────────────────────────────────────────── */
+.empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ink-muted);
+}
+.empty-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+/* ─── add custom course ───────────────────────────────────────────────────── */
+.add-custom {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 14px;
+  transition: all 0.15s;
+}
+.add-custom:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* ─── modal ───────────────────────────────────────────────────────────────── */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-glow);
+}
+.modal h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.modal label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+.modal input, .modal select, .modal textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+.modal input:focus, .modal select:focus, .modal textarea:focus {
+  outline: none;
+  border-color: var(--border-strong);
+}
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+  justify-content: flex-end;
+}
+.btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 16px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--surface-hover); }
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+.btn.primary:hover { background: var(--accent-hover); }
+.btn.danger {
+  color: var(--accent);
+  border-color: var(--border);
+}
+.btn.danger:hover { background: var(--accent-glow); }
+
+/* ─── footer ───────────────────────────────────────────────────────────────── */
+.footer-bar {
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.footer-bar a, .footer-bar button {
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-decoration: none;
+}
+.footer-bar a:hover, .footer-bar button:hover { color: var(--accent); }
+
+/* ─── staggered entry animation ──────────────────────────────────────────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.dashboard, .tabs, .filters, .course-list > * {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.dashboard { animation-delay: 0.05s; }
+.tabs { animation-delay: 0.1s; }
+.filters { animation-delay: 0.15s; }
+.course-list > *:nth-child(1) { animation-delay: 0.20s; }
+.course-list > *:nth-child(2) { animation-delay: 0.23s; }
+.course-list > *:nth-child(3) { animation-delay: 0.26s; }
+.course-list > *:nth-child(4) { animation-delay: 0.29s; }
+.course-list > *:nth-child(5) { animation-delay: 0.32s; }
+.course-list > *:nth-child(n+6) { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <header>
+    <div>
+      <div class="brand">the<span>.</span>roadmap</div>
+      <div class="sub">pd modules · summer 2026 · full-stack track</div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard" id="dashboard">
+    <!-- filled by JS -->
+  </section>
+
+  <!-- TABS -->
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="path">My Path <span class="tab-count" id="path-count">0</span></button>
+    <button class="tab" data-tab="browse">Browse Catalog <span class="tab-count" id="browse-count">0</span></button>
+    <button class="tab" data-tab="done">Completed <span class="tab-count" id="done-count">0</span></button>
+  </nav>
+
+  <!-- FILTERS (only show on browse tab) -->
+  <div class="filters" id="filters" style="display:none">
+    <div class="search-box"><input type="text" id="search" placeholder="search courses…"></div>
+    <select class="chip" id="filter-cat"><option value="">all categories</option></select>
+    <select class="chip" id="filter-type">
+      <option value="">all types</option>
+      <option value="technical">technical</option>
+      <option value="professional">professional</option>
+    </select>
+    <button class="chip" id="filter-free" data-on="false">free only</button>
+    <button class="chip" id="filter-rec" data-on="false">recommended</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="course-list" id="list"></div>
+
+  <button class="add-custom" id="add-custom-btn">+ add a custom course</button>
+
+  <footer class="footer-bar">
+    <div>v1 · stored in your browser · <span id="lastsaved"></span></div>
+    <div>
+      <button id="export-btn">export progress</button>
+      &nbsp;·&nbsp;
+      <button id="reset-btn">reset</button>
+    </div>
+  </footer>
+</div>
+
+<!-- modal for custom course / edit -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Add a custom course</h3>
+    <label>Title</label>
+    <input id="m-title" type="text" placeholder="e.g. Build a React app from scratch">
+    <label>Vendor / source</label>
+    <input id="m-vendor" type="text" placeholder="e.g. YouTube, freeCodeCamp">
+    <label>Estimated hours</label>
+    <input id="m-hours" type="number" min="0.5" step="0.5" value="5">
+    <label>Type</label>
+    <select id="m-type">
+      <option value="technical">Technical</option>
+      <option value="professional">Professional</option>
+    </select>
+    <label>URL (optional)</label>
+    <input id="m-url" type="url" placeholder="https://…">
+    <div class="modal-actions">
+      <button class="btn" id="m-cancel">Cancel</button>
+      <button class="btn primary" id="m-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE COURSE CATALOG
+   Edit this array freely. id must be unique. type is 'technical' or 'professional'.
+   recommended:true = part of the suggested 100-hour starter path.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const COURSES = [
+  // ─── WEB DEV FUNDAMENTALS (full-stack focus) ──────────────────────────────
+  { id: 'html-css', title: 'Learning HTML & CSS', vendor: 'LinkedIn Learning', category: 'Web Dev', type: 'technical', hours: 5, free: false, recommended: true, desc: 'Introductory HTML and CSS — build basic webpages with structure and styling.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'js-webpages', title: 'JavaScript for Webpages', vendor: 'LinkedIn Learning', category: 'Web Dev', type: 'technical', hours: 8, free: false, recommended: true, desc: 'Programming in JavaScript for interactive webpages — DOM, events, fetch.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'fcc-responsive', title: 'Responsive Web Design Certification', vendor: 'freeCodeCamp', category: 'Web Dev', type: 'technical', hours: 30, free: true, recommended: true, desc: 'Project-based cert covering HTML, CSS, flexbox, grid, accessibility, and responsive layouts.', url: 'https://www.freecodecamp.org/learn/2022/responsive-web-design/' },
+  { id: 'fcc-js-algos', title: 'JavaScript Algorithms & Data Structures', vendor: 'freeCodeCamp', category: 'Web Dev', type: 'technical', hours: 30, free: true, recommended: false, desc: 'Modern JS, ES6, regex, debugging, OOP, functional programming, and algorithm projects.', url: 'https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures-v8/' },
+  { id: 'fcc-frontend-libs', title: 'Front End Development Libraries', vendor: 'freeCodeCamp', category: 'Web Dev', type: 'technical', hours: 30, free: true, recommended: false, desc: 'React, Redux, Sass, Bootstrap, jQuery — frontend stack used at most web jobs.', url: 'https://www.freecodecamp.org/learn/front-end-development-libraries/' },
+  { id: 'fcc-backend', title: 'Back End Development and APIs', vendor: 'freeCodeCamp', category: 'Web Dev', type: 'technical', hours: 30, free: true, recommended: false, desc: 'Node.js, Express, MongoDB — build and deploy real APIs.', url: 'https://www.freecodecamp.org/learn/back-end-development-and-apis/' },
+  { id: 'odin-foundations', title: 'The Odin Project: Foundations', vendor: 'The Odin Project', category: 'Web Dev', type: 'technical', hours: 50, free: true, recommended: false, desc: 'Open-source full-stack curriculum. Foundations covers git, HTML, CSS, JS basics.', url: 'https://www.theodinproject.com/paths/foundations/courses/foundations' },
+
+  // ─── PROGRAMMING LANGUAGES ───────────────────────────────────────────────
+  { id: 'learn-python', title: 'Learning Python', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 5, free: false, recommended: true, desc: 'Basics of Python programming with some data applications.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'python-essential', title: 'Python Essential Training', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 7, free: false, recommended: true, desc: 'Work with dates and times, files, and parse HTML, JSON, and XML from the web.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'python-data-analysis', title: 'Python Data Analysis', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 5, free: false, recommended: false, desc: 'How to analyze data with Python — pandas, numpy fundamentals.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'learn-java', title: 'Learning Java', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 6, free: false, recommended: true, desc: 'Java fundamentals — syntax, OOP, collections. Useful for interview prep.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'oop-csharp', title: 'Object-Oriented Programming with C#', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 6, free: false, recommended: true, desc: 'OOP concepts through C# — classes, inheritance, polymorphism, encapsulation.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'learn-cpp', title: 'Learning C++', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 5, free: false, recommended: false, desc: 'Learn C++ syntax, operators, loops, functions, data structures, classes, templates.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'cpp-essential', title: 'C++ Essential Training', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 5, free: false, recommended: false, desc: 'Compile and run C++ programs, variables, control flow, functions.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'cpp-pointers', title: 'Learning C++ Pointers', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 2, free: false, recommended: false, desc: 'Use C++ pointers to control memory and write more efficient applications.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'cpp-advanced', title: 'C++ Advanced Topics', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 4, free: false, recommended: false, desc: 'Advanced C++ — templates, STL, parallel/concurrent programming.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'learn-c', title: 'Learning C', vendor: 'LinkedIn Learning', category: 'Programming', type: 'technical', hours: 4, free: false, recommended: false, desc: 'Vocabulary and basics of C — the language that inspired C++, Objective-C, more.', url: 'https://www.linkedin.com/learning/' },
+
+  // ─── DATA STRUCTURES & ALGORITHMS (interview prep) ───────────────────────
+  { id: 'dsa-java', title: 'Data Structures & Algorithms Deep Dive (Java)', vendor: 'Udemy', category: 'Programming', type: 'technical', hours: 15, free: false, recommended: true, desc: 'Arrays, linked lists, trees, hashtables, stacks, queues, heaps, sort/search — interview essential.', url: 'https://www.udemy.com/' },
+
+  // ─── SYSTEMS / INFRA ─────────────────────────────────────────────────────
+  { id: 'linux-cli', title: 'Learning Linux Command Line', vendor: 'LinkedIn Learning', category: 'Systems', type: 'technical', hours: 4, free: false, recommended: true, desc: 'Navigate the shell, manage files, write basic scripts — essential for any backend role.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'networking-fnd', title: 'Networking Foundations', vendor: 'LinkedIn Learning', category: 'Systems', type: 'technical', hours: 5, free: false, recommended: true, desc: 'TCP/IP, DNS, HTTP — fundamentals every web dev should understand.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'wireshark', title: 'Wireshark Essential Training', vendor: 'LinkedIn Learning', category: 'Systems', type: 'technical', hours: 3, free: false, recommended: false, desc: 'Capture and inspect network traffic.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'wireless-net', title: 'Wireless Network Essential Training', vendor: 'LinkedIn Learning', category: 'Systems', type: 'technical', hours: 4, free: false, recommended: false, desc: 'Wireless protocols, security, troubleshooting.', url: 'https://www.linkedin.com/learning/' },
+
+  // ─── CLOUD ───────────────────────────────────────────────────────────────
+  { id: 'aws-cloud-practitioner', title: 'AWS Cloud Practitioner Essentials', vendor: 'AWS Skill Builder', category: 'Cloud', type: 'technical', hours: 6, free: true, recommended: false, desc: 'Free official AWS intro covering core services, pricing, security.', url: 'https://skillbuilder.aws/' },
+  { id: 'gcp-fundamentals', title: 'Google Cloud Fundamentals: Core Infrastructure', vendor: 'Google Cloud Skills Boost', category: 'Cloud', type: 'technical', hours: 8, free: true, recommended: false, desc: 'GCP core services, compute, storage, networking.', url: 'https://www.cloudskillsboost.google/' },
+  { id: 'ms-azure-fundamentals', title: 'Microsoft Azure Fundamentals (AZ-900 path)', vendor: 'Microsoft Learn', category: 'Cloud', type: 'technical', hours: 10, free: true, recommended: false, desc: 'Free Azure intro path — cloud concepts, core services, security, pricing.', url: 'https://learn.microsoft.com/' },
+
+  // ─── DATA SCIENCE ────────────────────────────────────────────────────────
+  { id: 'intro-ds', title: 'Introduction to Data Science', vendor: 'Cognitive Class (IBM)', category: 'Data Science', type: 'technical', hours: 5, free: true, recommended: true, desc: 'Beginner data science — first of three in IBM learning path. Earn a free badge.', url: 'https://cognitiveclass.ai/' },
+  { id: 'ds-tools', title: 'Data Science Tools', vendor: 'Cognitive Class (IBM)', category: 'Data Science', type: 'technical', hours: 5, free: true, recommended: false, desc: 'Jupyter, RStudio, Watson Studio — second of three.', url: 'https://cognitiveclass.ai/' },
+  { id: 'ds-method', title: 'Data Science Methodology', vendor: 'Cognitive Class (IBM)', category: 'Data Science', type: 'technical', hours: 5, free: true, recommended: false, desc: 'How to approach a data problem end-to-end — third of three.', url: 'https://cognitiveclass.ai/' },
+  { id: 'what-is-ds', title: 'What is Data Science?', vendor: 'Coursera (IBM)', category: 'Data Science', type: 'technical', hours: 3, free: true, recommended: false, desc: 'Overview of the field — audit free.', url: 'https://www.coursera.org/learn/what-is-datascience' },
+  { id: 'data-fluency', title: 'Data Fluency: Exploring and Describing Data', vendor: 'Barton Poulson', category: 'Data Science', type: 'technical', hours: 4, free: false, recommended: false, desc: 'How to present and read data intuitively.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'tableau-essential', title: 'Tableau Essential Learning', vendor: 'LinkedIn Learning', category: 'Data Science', type: 'technical', hours: 5, free: false, recommended: true, desc: 'Methods and logic behind making a dashboard in Tableau.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'tableau-dashboards', title: 'Creating Interactive Tableau Dashboards', vendor: 'LinkedIn Learning', category: 'Data Science', type: 'technical', hours: 4, free: false, recommended: false, desc: 'Build interactive Tableau dashboards.', url: 'https://www.linkedin.com/learning/' },
+
+  // ─── ML / AI ─────────────────────────────────────────────────────────────
+  { id: 'ml-basics', title: 'Machine Learning Basics', vendor: 'Amazon', category: 'ML / AI', type: 'technical', hours: 3, free: true, recommended: false, desc: 'Basics of Machine Learning and how it can be used.', url: 'https://aws.amazon.com/training/' },
+  { id: 'ml-developers', title: 'Intro to Machine Learning for Developers', vendor: 'Amazon', category: 'ML / AI', type: 'technical', hours: 4, free: true, recommended: false, desc: 'ML for software developers — practical applications.', url: 'https://aws.amazon.com/training/' },
+  { id: 'chatbot', title: 'Build Your Own Chatbot', vendor: 'IBM', category: 'ML / AI', type: 'technical', hours: 3, free: true, recommended: true, desc: 'Build a chatbot using IBM Watson — fun, deployable portfolio piece.', url: 'https://cognitiveclass.ai/' },
+
+  // ─── ANALYTICS ───────────────────────────────────────────────────────────
+  { id: 'ga-beginners', title: 'Google Analytics for Beginners', vendor: 'Google Analytics Academy', category: 'Analytics', type: 'technical', hours: 3, free: true, recommended: false, desc: 'Course over the fundamentals of Google Analytics.', url: 'https://analytics.google.com/analytics/academy/' },
+  { id: 'ga-advanced', title: 'Advanced Google Analytics', vendor: 'Google Analytics Academy', category: 'Analytics', type: 'technical', hours: 4, free: true, recommended: false, desc: 'Advanced segmenting, custom reports, attribution.', url: 'https://analytics.google.com/analytics/academy/' },
+  { id: 'ga-iq', title: 'Google Analytics IQ Certification', vendor: 'Google', category: 'Analytics', type: 'technical', hours: 6, free: true, recommended: false, desc: 'Official cert — demonstrates analytics proficiency to employers.', url: 'https://analytics.google.com/analytics/academy/' },
+
+  // ─── PROFESSIONAL / SOFT SKILLS ──────────────────────────────────────────
+  { id: 'design-thinking-ibm', title: 'Enterprise Design Thinking Practitioner', vendor: 'IBM', category: 'Design Thinking', type: 'professional', hours: 5, free: true, recommended: true, desc: 'Free IBM badge — design thinking framework for product teams.', url: 'https://www.ibm.com/design/thinking/' },
+  { id: 'design-thinking-impl', title: 'Design Thinking: Implementing the Process', vendor: 'LinkedIn Learning', category: 'Design Thinking', type: 'professional', hours: 3, free: false, recommended: false, desc: 'How to apply design thinking on real projects.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'six-sigma', title: 'Six Sigma Foundation', vendor: 'LinkedIn Learning', category: 'Process', type: 'professional', hours: 5, free: false, recommended: true, desc: 'Process improvement framework — improve performance with Six Sigma.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-foundations', title: 'Project Management Foundations', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 4, free: false, recommended: true, desc: 'Introduction to the basics of project management.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-communication', title: 'Project Communication', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 2, free: false, recommended: true, desc: 'Streamline communication and recognize common impediments.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-requirements', title: 'Project Requirements', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 2, free: false, recommended: true, desc: 'How to determine appropriate project requirements.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-risk', title: 'Project Risk Management', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 3, free: false, recommended: false, desc: 'Anticipate, assess, and manage risk.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-budget', title: 'Project Budget Management', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 3, free: false, recommended: false, desc: 'Effectively manage a project budget.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-schedule', title: 'Project Scheduling', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 3, free: false, recommended: false, desc: 'Set and maintain project schedules.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-stakeholders', title: 'Managing Project Stakeholders', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 2, free: false, recommended: false, desc: 'Manage stakeholders and meet their needs.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-ethics', title: 'Project Management Ethics', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 2, free: false, recommended: false, desc: 'Operate ethically as a project manager.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'pm-gantt', title: 'Using Gantt Charts', vendor: 'LinkedIn Learning', category: 'PM', type: 'professional', hours: 2, free: false, recommended: false, desc: 'Introduction to Gantt charts.', url: 'https://www.linkedin.com/learning/' },
+
+  // ─── EXCEL / GOVERNANCE ──────────────────────────────────────────────────
+  { id: 'excel-pivot', title: 'Excel: PivotTables', vendor: 'LinkedIn Learning', category: 'Excel', type: 'professional', hours: 3, free: false, recommended: true, desc: 'Summarize and analyze data with Excel pivot tables.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'excel-advanced', title: 'Excel: Advanced Functions', vendor: 'LinkedIn Learning', category: 'Excel', type: 'professional', hours: 4, free: false, recommended: false, desc: 'Overview of Excel\'s advanced functions.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'excel-stats', title: 'Excel: Statistics', vendor: 'LinkedIn Learning', category: 'Excel', type: 'professional', hours: 3, free: false, recommended: false, desc: 'Basic statistics with Excel.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'info-gov', title: 'Learning Information Governance', vendor: 'LinkedIn Learning', category: 'Governance', type: 'professional', hours: 2, free: false, recommended: true, desc: 'How to keep business information safe.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'data-gov', title: 'Learning Data Governance', vendor: 'LinkedIn Learning', category: 'Governance', type: 'professional', hours: 3, free: false, recommended: true, desc: 'Basic information regarding safely managing business data.', url: 'https://www.linkedin.com/learning/' },
+
+  // ─── HARDWARE/EMBEDDED (not for full-stack focus, kept for variety) ─────
+  { id: 'raspi-essential', title: 'Raspberry Pi Essential Training', vendor: 'LinkedIn Learning', category: 'Embedded', type: 'technical', hours: 5, free: false, recommended: false, desc: 'Get hands-on with Raspberry Pi for tinkering projects.', url: 'https://www.linkedin.com/learning/' },
+  { id: 'arduino-found', title: 'Learning Arduino: Foundations', vendor: 'LinkedIn Learning', category: 'Embedded', type: 'technical', hours: 4, free: false, recommended: false, desc: 'Build interactive electronics with Arduino.', url: 'https://www.linkedin.com/learning/' },
+];
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATE & PERSISTENCE
+   ═══════════════════════════════════════════════════════════════════════════ */
+const DEADLINE = new Date('2026-07-10T23:59:59');
+const STORAGE_KEY = 'pd-roadmap-v1';
+
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { console.warn('Could not load state', e); }
+  // Default state: prefill My Path with all "recommended" courses
+  return {
+    path: COURSES.filter(c => c.recommended).map(c => c.id),
+    completed: [],
+    custom: [],
+    customHours: {},
+    tab: 'path',
+    filters: { search: '', category: '', type: '', free: false, rec: false },
+  };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('lastsaved').textContent = 'saved ' + t;
+  } catch (e) { console.warn('Could not save state', e); }
+}
+
+function allCourses() {
+  return [...COURSES, ...state.custom];
+}
+
+function findCourse(id) {
+  return allCourses().find(c => c.id === id);
+}
+
+function effectiveHours(c) {
+  return state.customHours[c.id] ?? c.hours;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+function renderDashboard() {
+  const pathCourses = state.path.map(findCourse).filter(Boolean);
+  const completed = state.completed.map(findCourse).filter(Boolean);
+
+  const totalHrs = completed.reduce((s, c) => s + effectiveHours(c), 0);
+  const techHrs = completed.filter(c => c.type === 'technical').reduce((s, c) => s + effectiveHours(c), 0);
+  const profHrs = completed.filter(c => c.type === 'professional').reduce((s, c) => s + effectiveHours(c), 0);
+
+  const today = new Date();
+  const daysLeft = Math.max(0, Math.ceil((DEADLINE - today) / 86400000));
+  const remaining = Math.max(0, 100 - totalHrs);
+  const weeksLeft = daysLeft / 7;
+  const perWeek = weeksLeft > 0 ? (remaining / weeksLeft).toFixed(1) : 0;
+
+  const totalDone = totalHrs >= 100;
+  const techDone = techHrs >= 25;
+  const profDone = profHrs >= 25;
+
+  let paceMsg = '';
+  let paceClass = '';
+  if (totalDone && techDone && profDone) {
+    paceMsg = `you hit all three minimums — ${totalHrs.toFixed(1)} hours logged. nice work.`;
+    paceClass = 'celebrate';
+  } else if (daysLeft === 0) {
+    paceMsg = `deadline is today — submit what you have.`;
+  } else {
+    paceMsg = `${perWeek} hrs/week needed to hit 100 by deadline`;
+  }
+
+  document.getElementById('dashboard').innerHTML = `
+    <div class="dash-label">Summer 2026 · PD Modules</div>
+    <h1 class="dash-headline"><em>${daysLeft}</em> days <span style="color:var(--ink-muted);font-weight:400">until 10 July</span></h1>
+    <div class="dash-deadline">main work due · ${DEADLINE.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Total hours <span class="check-badge ${totalDone?'show':''}">✓</span></div>
+        <div class="stat-value">${totalHrs.toFixed(1)}<span class="small">/ 100</span></div>
+        <div class="bar"><div class="bar-fill ${totalDone?'done':''}" style="width:${Math.min(100, totalHrs)}%"></div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Technical <span class="check-badge ${techDone?'show':''}">✓</span></div>
+        <div class="stat-value">${techHrs.toFixed(1)}<span class="small">/ 25 min</span></div>
+        <div class="bar"><div class="bar-fill ${techDone?'done':''}" style="width:${Math.min(100, techHrs/25*100)}%"></div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Professional <span class="check-badge ${profDone?'show':''}">✓</span></div>
+        <div class="stat-value">${profHrs.toFixed(1)}<span class="small">/ 25 min</span></div>
+        <div class="bar"><div class="bar-fill ${profDone?'done':''}" style="width:${Math.min(100, profHrs/25*100)}%"></div></div>
+      </div>
+    </div>
+
+    <div class="pace-note ${paceClass}">${paceMsg}</div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COURSE LIST RENDERING
+   ═══════════════════════════════════════════════════════════════════════════ */
+function renderList() {
+  const list = document.getElementById('list');
+  const tab = state.tab;
+  let items = [];
+
+  if (tab === 'path') {
+    items = state.path.map(findCourse).filter(Boolean);
+  } else if (tab === 'browse') {
+    items = allCourses().filter(c => {
+      const f = state.filters;
+      if (f.search && !`${c.title} ${c.vendor} ${c.desc} ${c.category}`.toLowerCase().includes(f.search.toLowerCase())) return false;
+      if (f.category && c.category !== f.category) return false;
+      if (f.type && c.type !== f.type) return false;
+      if (f.free && !c.free) return false;
+      if (f.rec && !c.recommended) return false;
+      return true;
+    });
+  } else if (tab === 'done') {
+    items = state.completed.map(findCourse).filter(Boolean);
+  }
+
+  if (items.length === 0) {
+    list.innerHTML = `
+      <div class="empty">
+        <div class="empty-title">${
+          tab==='path' ? 'your path is empty' :
+          tab==='done' ? 'nothing completed yet' :
+          'no courses match those filters'
+        }</div>
+        <div>${
+          tab==='path' ? 'head to Browse Catalog to add courses' :
+          tab==='done' ? 'check off courses as you finish them' :
+          'try widening your search'
+        }</div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(c => courseCard(c, tab)).join('');
+}
+
+function courseCard(c, tab) {
+  const inPath = state.path.includes(c.id);
+  const isDone = state.completed.includes(c.id);
+  const hrs = effectiveHours(c);
+  const isCustom = state.custom.some(x => x.id === c.id);
+
+  return `
+    <div class="course ${isDone?'complete':''}" data-id="${c.id}">
+      <div class="checkbox" data-action="toggle-done"></div>
+      <div class="course-body">
+        <div class="course-title">${escape(c.title)}</div>
+        <div class="course-desc">${escape(c.desc || '')}</div>
+        <div class="course-meta">
+          <span class="tag">${escape(c.vendor)}</span>
+          <span class="tag">${escape(c.category)}</span>
+          <span class="tag ${c.type==='technical'?'tech':'prof'}">${c.type}</span>
+          <span class="tag hours">${hrs} hr${hrs===1?'':'s'}</span>
+          ${c.free ? `<span class="tag free">free</span>` : ''}
+          ${c.recommended ? `<span class="tag rec">recommended</span>` : ''}
+        </div>
+      </div>
+      <div class="course-actions">
+        ${tab !== 'done' ? `<button class="icon-btn ${inPath?'added':''}" data-action="toggle-path" title="${inPath?'Remove from path':'Add to path'}">${inPath?'−':'+'}</button>` : ''}
+        ${c.url ? `<a class="icon-btn" href="${c.url}" target="_blank" rel="noopener" title="Open course" data-action="link">↗</a>` : ''}
+        ${isCustom ? `<button class="icon-btn" data-action="delete-custom" title="Delete custom course">×</button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function escape(s) {
+  return String(s || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABS / COUNTS / FILTERS
+   ═══════════════════════════════════════════════════════════════════════════ */
+function renderTabs() {
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === state.tab);
+  });
+  document.getElementById('path-count').textContent = state.path.length;
+  document.getElementById('browse-count').textContent = allCourses().length;
+  document.getElementById('done-count').textContent = state.completed.length;
+  document.getElementById('filters').style.display = state.tab === 'browse' ? 'flex' : 'none';
+  document.getElementById('add-custom-btn').style.display = state.tab === 'path' ? 'block' : 'none';
+}
+
+function populateCategoryFilter() {
+  const cats = [...new Set(allCourses().map(c => c.category))].sort();
+  const sel = document.getElementById('filter-cat');
+  sel.innerHTML = `<option value="">all categories</option>` + cats.map(c => `<option value="${escape(c)}">${escape(c)}</option>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ACTIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+function togglePath(id) {
+  const i = state.path.indexOf(id);
+  if (i >= 0) state.path.splice(i, 1);
+  else state.path.push(id);
+  saveAndRender();
+}
+
+function toggleDone(id) {
+  const i = state.completed.indexOf(id);
+  if (i >= 0) state.completed.splice(i, 1);
+  else state.completed.push(id);
+  saveAndRender();
+}
+
+function deleteCustom(id) {
+  if (!confirm('Delete this custom course?')) return;
+  state.custom = state.custom.filter(c => c.id !== id);
+  state.path = state.path.filter(x => x !== id);
+  state.completed = state.completed.filter(x => x !== id);
+  saveAndRender();
+}
+
+function saveAndRender() {
+  saveState();
+  renderDashboard();
+  renderList();
+  renderTabs();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EVENT WIRING
+   ═══════════════════════════════════════════════════════════════════════════ */
+document.getElementById('tabs').addEventListener('click', e => {
+  const t = e.target.closest('.tab');
+  if (!t) return;
+  state.tab = t.dataset.tab;
+  saveAndRender();
+});
+
+document.getElementById('list').addEventListener('click', e => {
+  const course = e.target.closest('.course');
+  if (!course) return;
+  const id = course.dataset.id;
+  const action = e.target.dataset.action || e.target.closest('[data-action]')?.dataset.action;
+  if (action === 'toggle-done') toggleDone(id);
+  else if (action === 'toggle-path') { e.stopPropagation(); togglePath(id); }
+  else if (action === 'delete-custom') { e.stopPropagation(); deleteCustom(id); }
+  else if (action === 'link') { /* let link work */ }
+  else toggleDone(id); // click anywhere else on card
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  state.filters.search = e.target.value;
+  renderList();
+});
+
+document.getElementById('filter-cat').addEventListener('change', e => {
+  state.filters.category = e.target.value;
+  saveAndRender();
+});
+
+document.getElementById('filter-type').addEventListener('change', e => {
+  state.filters.type = e.target.value;
+  saveAndRender();
+});
+
+document.getElementById('filter-free').addEventListener('click', e => {
+  state.filters.free = !state.filters.free;
+  e.target.classList.toggle('active', state.filters.free);
+  saveAndRender();
+});
+
+document.getElementById('filter-rec').addEventListener('click', e => {
+  state.filters.rec = !state.filters.rec;
+  e.target.classList.toggle('active', state.filters.rec);
+  saveAndRender();
+});
+
+/* ─── modal: add custom ──────────────────────────────────────────────────── */
+const modalBg = document.getElementById('modal-bg');
+function openModal() {
+  document.getElementById('m-title').value = '';
+  document.getElementById('m-vendor').value = '';
+  document.getElementById('m-hours').value = 5;
+  document.getElementById('m-type').value = 'technical';
+  document.getElementById('m-url').value = '';
+  modalBg.classList.add('show');
+  setTimeout(() => document.getElementById('m-title').focus(), 50);
+}
+function closeModal() { modalBg.classList.remove('show'); }
+
+document.getElementById('add-custom-btn').addEventListener('click', openModal);
+document.getElementById('m-cancel').addEventListener('click', closeModal);
+modalBg.addEventListener('click', e => { if (e.target === modalBg) closeModal(); });
+
+document.getElementById('m-save').addEventListener('click', () => {
+  const title = document.getElementById('m-title').value.trim();
+  if (!title) return alert('Title required');
+  const id = 'custom-' + Date.now();
+  const c = {
+    id,
+    title,
+    vendor: document.getElementById('m-vendor').value.trim() || 'Custom',
+    category: 'Custom',
+    type: document.getElementById('m-type').value,
+    hours: parseFloat(document.getElementById('m-hours').value) || 1,
+    free: false,
+    recommended: false,
+    desc: '',
+    url: document.getElementById('m-url').value.trim(),
+  };
+  state.custom.push(c);
+  state.path.push(id);
+  closeModal();
+  saveAndRender();
+});
+
+/* ─── export / reset ────────────────────────────────────────────────────── */
+document.getElementById('export-btn').addEventListener('click', () => {
+  const completed = state.completed.map(findCourse).filter(Boolean);
+  const total = completed.reduce((s, c) => s + effectiveHours(c), 0);
+  const tech = completed.filter(c => c.type==='technical').reduce((s, c) => s + effectiveHours(c), 0);
+  const prof = completed.filter(c => c.type==='professional').reduce((s, c) => s + effectiveHours(c), 0);
+
+  const lines = [
+    'PD MODULES — PROGRESS REPORT',
+    'Generated: ' + new Date().toLocaleString(),
+    '',
+    `Total hours: ${total.toFixed(1)} / 100`,
+    `Technical:   ${tech.toFixed(1)} / 25 minimum`,
+    `Professional:${prof.toFixed(1)} / 25 minimum`,
+    '',
+    'COMPLETED COURSES',
+    '─────────────────',
+    ...completed.map(c => `[${c.type[0].toUpperCase()}] ${c.title} — ${c.vendor} — ${effectiveHours(c)} hrs`),
+    '',
+    'IN PROGRESS (in My Path, not yet complete)',
+    '─────────────────',
+    ...state.path.filter(id => !state.completed.includes(id)).map(findCourse).filter(Boolean).map(c => `[${c.type[0].toUpperCase()}] ${c.title} — ${c.vendor} — ${effectiveHours(c)} hrs`),
+  ];
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `pd-modules-progress-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (!confirm('Reset all progress? This clears your path and completed courses.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = loadState();
+  saveAndRender();
+});
+
+/* ─── boot ───────────────────────────────────────────────────────────────── */
+populateCategoryFilter();
+document.getElementById('filter-cat').value = state.filters.category;
+document.getElementById('filter-type').value = state.filters.type;
+document.getElementById('filter-free').classList.toggle('active', state.filters.free);
+document.getElementById('filter-rec').classList.toggle('active', state.filters.rec);
+document.getElementById('search').value = state.filters.search;
+saveAndRender();
+</script>
+
+</body>
+</html>
