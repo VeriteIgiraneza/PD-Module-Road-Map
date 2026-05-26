@@ -429,8 +429,8 @@ select.chip {
   gap: 14px;
   align-items: start;
   transition: all 0.2s;
-  cursor: pointer;
 }
+.checkbox { cursor: pointer; }
 .course:hover {
   background: var(--surface-hover);
   border-color: var(--border-strong);
@@ -1126,8 +1126,7 @@ document.getElementById('list').addEventListener('click', e => {
   if (action === 'toggle-done') toggleDone(id);
   else if (action === 'toggle-path') { e.stopPropagation(); togglePath(id); }
   else if (action === 'delete-custom') { e.stopPropagation(); deleteCustom(id); }
-  else if (action === 'link') { /* let link work */ }
-  else toggleDone(id); // click anywhere else on card
+  // clicks anywhere else on the card do nothing
 });
 
 document.getElementById('search').addEventListener('input', e => {
