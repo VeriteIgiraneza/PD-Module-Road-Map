@@ -718,7 +718,7 @@ select.chip {
 <div class="shell">
   <header>
     <div>
-      <div class="brand">The<span>.</span>RoadMap Summer 2026</div>
+      <div class="brand">The<span>.</span>RoadMap</div>
       <div class="sub">pd modules · Software Engineer</div>
     </div>
     <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">◐</button>
@@ -1240,7 +1240,7 @@ function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#ffffff' : '#0f0d0a');
 }
-applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+applyTheme(localStorage.getItem(THEME_KEY) || 'light');
 
 document.getElementById('theme-toggle').addEventListener('click', () => {
   const next = (document.documentElement.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
