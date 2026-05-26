@@ -45,23 +45,23 @@
 
 /* light theme override */
 [data-theme="light"] {
-  --bg: #faf7f0;
-  --bg-grad: radial-gradient(ellipse at top, #fff 0%, #faf7f0 60%);
+  --bg: #ffffff;
+  --bg-grad: none;
   --surface: #ffffff;
-  --surface-2: #f5f1e8;
-  --surface-hover: #efeadc;
-  --border: #e5dfd0;
-  --border-strong: #c9c0aa;
-  --ink: #1a1714;
-  --ink-muted: #6b6457;
-  --ink-dim: #9c9486;
+  --surface-2: #f7f7f7;
+  --surface-hover: #f0f0f0;
+  --border: #e4e4e4;
+  --border-strong: #c4c4c4;
+  --ink: #111111;
+  --ink-muted: #606060;
+  --ink-dim: #999999;
   --accent: #c1311f;
   --accent-hover: #d6391f;
-  --accent-glow: rgba(193, 49, 31, 0.12);
-  --success: #5d8b3f;
-  --success-bg: rgba(93, 139, 63, 0.1);
-  --gold: #a07e3a;
-  --gold-bg: rgba(160, 126, 58, 0.1);
+  --accent-glow: rgba(193, 49, 31, 0.1);
+  --success: #4a7a2e;
+  --success-bg: rgba(74, 122, 46, 0.08);
+  --gold: #8a6a2e;
+  --gold-bg: rgba(138, 106, 46, 0.08);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -96,7 +96,7 @@ body::before {
 .shell {
   max-width: 880px;
   margin: 0 auto;
-  padding: 24px 18px;
+  padding: 8px 4px;
   position: relative;
   z-index: 2;
 }
@@ -718,8 +718,8 @@ select.chip {
 <div class="shell">
   <header>
     <div>
-      <div class="brand">the<span>.</span>roadmap</div>
-      <div class="sub">pd modules · summer 2026 · full-stack track</div>
+      <div class="brand">The<span>.</span>RoadMap Summer 2026</div>
+      <div class="sub">pd modules · Software Engineer</div>
     </div>
     <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">◐</button>
   </header>
@@ -1238,7 +1238,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
 const THEME_KEY = 'pd-roadmap-theme';
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
-  document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#faf7f0' : '#0f0d0a');
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#ffffff' : '#0f0d0a');
 }
 applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
 
