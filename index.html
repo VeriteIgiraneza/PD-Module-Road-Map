@@ -964,12 +964,12 @@ function renderDashboard() {
       </div>
       <div class="stat">
         <div class="stat-label">Technical <span class="check-badge ${techDone?'show':''}">✓</span></div>
-        <div class="stat-value">${techHrs.toFixed(1)}<span class="small">/ 25 min</span></div>
+        <div class="stat-value">${techHrs.toFixed(1)}<span class="small">/ 25 hrs min</span></div>
         <div class="bar"><div class="bar-fill ${techDone?'done':''}" style="width:${Math.min(100, techHrs/25*100)}%"></div></div>
       </div>
       <div class="stat">
         <div class="stat-label">Professional <span class="check-badge ${profDone?'show':''}">✓</span></div>
-        <div class="stat-value">${profHrs.toFixed(1)}<span class="small">/ 25 min</span></div>
+        <div class="stat-value">${profHrs.toFixed(1)}<span class="small">/ 25 hrs min</span></div>
         <div class="bar"><div class="bar-fill ${profDone?'done':''}" style="width:${Math.min(100, profHrs/25*100)}%"></div></div>
       </div>
     </div>
